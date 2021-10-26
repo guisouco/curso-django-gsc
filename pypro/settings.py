@@ -153,7 +153,7 @@ if AWS_ACCESS_KEY_ID:  # pragma: no cover
     # -------------------------------------------------------------------
 
     STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-    COLLECTFAST_STRATEGY= 'collectfast.strategies.boto3.Boto3Strategy'
+    COLLECTFAST_STRATEGY = 'collectfast.strategies.boto3.Boto3Strategy'
     STATIC_S3_PATH = 'static'
     STATIC_ROOT = f'/{STATIC_S3_PATH}/'
     STATIC_URL = f'//s3.amazonaws.com/{AWS_STORAGE_BUCKET_NAME}/{STATIC_S3_PATH}/'
