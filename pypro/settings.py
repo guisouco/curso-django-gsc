@@ -13,6 +13,9 @@ from functools import partial
 from pathlib import Path
 from decouple import config, Csv
 import dj_database_url
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -80,7 +83,7 @@ WSGI_APPLICATION = 'pypro.wsgi.application'
 INTERNAL_IPS = config('INTERNAL_IPS', cast=Csv(), default='')
 
 if DEBUG:
-    INSTALLED_APPS.append('debug.toolbar')
+    INSTALLED_APPS.append('debug_toolbar')
     MIDDLEWARE.insert(0, 'debug_toolbar.middleware.DebugToolbarMiddleware')
 
 
@@ -184,6 +187,10 @@ if AWS_ACCESS_KEY_ID:  # pragma: no cover
     STATIC_ROOT = f'/{STATIC_S3_PATH}/'
     STATIC_URL = f'//{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/{STATIC_S3_PATH}/'
     ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
+
+SENTRY_DSN = config('SENTRY_DSN', default=None)
+
+sentry_sdk.init(dsn=SENTRY_DSN, integrations=[DjangoIntegration()])
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
